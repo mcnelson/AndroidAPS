@@ -419,8 +419,23 @@ class IobCobCalculatorPlugin @Inject constructor(
     private var scheduledHistoryPost: ScheduledFuture<*>? = null
     private var scheduledEvent: EventNewHistoryData? = null
 
+    private var lastBgCalcTriggeredAt: Long = 0L
+
     @Synchronized
     private fun scheduleHistoryDataChange(event: EventNewHistoryData) {
+        val intervalMinutes = preferences.get(IntKey.LoopMinBgRecalcInterval)
+        if (intervalMinutes > 0 && event.reloadBgData && event.newestGlucoseValueTimestamp != null) {
+            val now = System.currentTimeMillis()
+            val intervalMs = intervalMinutes * 60 * 1000L - 10_000L
+            val timeSinceLastCalc = now - lastBgCalcTriggeredAt
+
+            if (timeSinceLastCalc < intervalMs) {
+                aapsLogger.debug(LTag.AUTOSENS, "Throttled BG recalculation: ${timeSinceLastCalc / 1000}s since last, interval=${intervalMs / 1000}s")
+                return
+            }
+            lastBgCalcTriggeredAt = now
+        }
+
         // if there is nothing scheduled or asking reload deeper to the past
         if (scheduledEvent == null || event.oldDataTimestamp < (scheduledEvent?.oldDataTimestamp ?: 0L)) {
             // cancel waiting task to prevent sending multiple posts

@@ -1046,6 +1046,7 @@ class LoopPlugin @Inject constructor(
             title = rh.gs(app.aaps.core.ui.R.string.loop)
             initialExpandedChildrenCount = 0
             addPreference(AdaptiveIntPreference(ctx = context, intKey = IntKey.LoopOpenModeMinChange, dialogMessage = R.string.loop_open_mode_min_change_summary, title = R.string.loop_open_mode_min_change))
+            addPreference(LoopIntervalPreference(context))
         }
     }
 

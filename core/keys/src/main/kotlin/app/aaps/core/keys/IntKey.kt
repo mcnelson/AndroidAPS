@@ -48,6 +48,7 @@ enum class IntKey(
     ProtectionTypeBolus("bolus_protection", 0, 0, 5),
     SafetyMaxCarbs("treatmentssafety_maxcarbs", 48, 1, 200),
     LoopOpenModeMinChange("loop_openmode_min_change", 30, 0, 50, defaultedBySM = true),
+    LoopMinBgRecalcInterval("loop_min_bg_recalc_interval", 0, 0, 30),
     ApsMaxSmbFrequency("smbinterval", 3, 1, 10, defaultedBySM = true, dependency = BooleanKey.ApsUseSmb),
     ApsMaxMinutesOfBasalToLimitSmb("smbmaxminutes", 30, 15, 120, defaultedBySM = true, dependency = BooleanKey.ApsUseSmb),
     ApsUamMaxMinutesOfBasalToLimitSmb("uamsmbmaxminutes", 30, 15, 120, defaultedBySM = true, dependency = BooleanKey.ApsUseSmb),
