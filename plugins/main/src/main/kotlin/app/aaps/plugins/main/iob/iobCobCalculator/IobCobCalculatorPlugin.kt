@@ -430,7 +430,7 @@ class IobCobCalculatorPlugin @Inject constructor(
             val timeSinceLastCalc = now - lastBgCalcTriggeredAt
 
             if (timeSinceLastCalc < intervalMs) {
-                aapsLogger.debug(LTag.AUTOSENS, "Throttled BG recalculation: ${timeSinceLastCalc / 1000}s since last, interval=${intervalMs / 1000}s")
+                aapsLogger.debug(LTag.APS, "Throttled BG recalculation: ${timeSinceLastCalc / 1000}s since last, interval=${intervalMs / 1000}s")
                 return
             }
             lastBgCalcTriggeredAt = now
