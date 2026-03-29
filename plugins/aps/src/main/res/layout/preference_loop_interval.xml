@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="80dp"
-            android:text="None" />
+            android:text="No limit" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_1"

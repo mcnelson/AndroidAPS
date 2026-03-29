@@ -86,17 +86,12 @@ class LoopIntervalPreference(
         if (dailyCount > 500) { // actual high usage
             warningText?.text = rh.gs(R.string.loop_recalc_daily_count_warning, dailyCount)
             warningText?.setTextColor(rh.gc(app.aaps.core.ui.R.color.warning))
-            warningText?.visibility = View.VISIBLE
         } else if (minutes in 1..2) { // low data but high-rate selection
             warningText?.text = rh.gs(R.string.loop_recalc_high_rate_warning)
             warningText?.setTextColor(rh.gc(app.aaps.core.ui.R.color.warning))
-            warningText?.visibility = View.VISIBLE
-        } else if (dailyCount > 0) { // acceptable rate, show count
+        } else {
             warningText?.text = rh.gs(R.string.loop_recalc_daily_count, dailyCount)
             warningText?.setTextColor(rh.gc(android.R.color.white))
-            warningText?.visibility = View.VISIBLE
-        } else {
-            warningText?.visibility = View.GONE
         }
     }
 }
