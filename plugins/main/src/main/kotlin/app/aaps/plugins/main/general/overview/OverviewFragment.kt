@@ -448,12 +448,13 @@ class OverviewFragment : DaggerFragment(), View.OnClickListener, OnLongClickList
                     ProtectionCheck.Protection.BOLUS,
                     UIRunnable { if (isAdded) uiInteraction.runTempTargetDialog(childFragmentManager) })
 
-                R.id.active_profile      -> {
-                    uiInteraction.runProfileViewerDialog(
-                        childFragmentManager,
-                        dateUtil.now(),
-                        UiInteraction.Mode.RUNNING_PROFILE
-                    )
+                R.id.active_profile      -> activity?.let { activity ->
+                    if (loop.runningMode == RM.Mode.DISCONNECTED_PUMP) OKDialog.show(activity, rh.gs(R.string.not_available_full), rh.gs(R.string.smscommunicator_pump_disconnected))
+                    else
+                        protectionCheck.queryProtection(
+                            activity,
+                            ProtectionCheck.Protection.BOLUS,
+                            UIRunnable { uiInteraction.runProfileSwitchDialog(childFragmentManager) })
                 }
 
                 R.id.cgm_button          -> {
@@ -536,13 +537,12 @@ class OverviewFragment : DaggerFragment(), View.OnClickListener, OnLongClickList
             }
 
             R.id.temp_target         -> v.performClick()
-            R.id.active_profile      -> activity?.let { activity ->
-                if (loop.runningMode == RM.Mode.DISCONNECTED_PUMP) OKDialog.show(activity, rh.gs(R.string.not_available_full), rh.gs(R.string.smscommunicator_pump_disconnected))
-                else
-                    protectionCheck.queryProtection(
-                        activity,
-                        ProtectionCheck.Protection.BOLUS,
-                        UIRunnable { uiInteraction.runProfileSwitchDialog(childFragmentManager) })
+            R.id.active_profile      -> {
+                uiInteraction.runProfileViewerDialog(
+                    childFragmentManager,
+                    dateUtil.now(),
+                    UiInteraction.Mode.RUNNING_PROFILE
+                )
             }
 
         }

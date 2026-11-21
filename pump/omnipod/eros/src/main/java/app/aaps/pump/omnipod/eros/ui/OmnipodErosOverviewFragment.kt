@@ -285,6 +285,8 @@ class OmnipodErosOverviewFragment : DaggerFragment() {
             podInfoBinding.timeOnPod.text = PLACEHOLDER
             podInfoBinding.podExpiryDate.text = PLACEHOLDER
             podInfoBinding.podExpiryDate.setTextColor(rh.gac(context, app.aaps.core.ui.R.attr.defaultTextColor))
+            podInfoBinding.podHardEndDate.text = PLACEHOLDER
+            podInfoBinding.podHardEndDate.setTextColor(rh.gac(context, app.aaps.core.ui.R.attr.defaultTextColor))
             podInfoBinding.baseBasalRate.text = PLACEHOLDER
             podInfoBinding.totalDelivered.text = PLACEHOLDER
             podInfoBinding.reservoir.text = PLACEHOLDER
@@ -311,12 +313,26 @@ class OmnipodErosOverviewFragment : DaggerFragment() {
             if (expiresAt == null) {
                 podInfoBinding.podExpiryDate.text = PLACEHOLDER
                 podInfoBinding.podExpiryDate.setTextColor(rh.gac(context, app.aaps.core.ui.R.attr.defaultTextColor))
+                podInfoBinding.podHardEndDate.text = PLACEHOLDER
+                podInfoBinding.podHardEndDate.setTextColor(rh.gac(context, app.aaps.core.ui.R.attr.defaultTextColor))
             } else {
                 podInfoBinding.podExpiryDate.text = readableZonedTime(expiresAt)
                 podInfoBinding.podExpiryDate.setTextColor(
                     rh.gac(
                         context,
                         if (DateTime.now().isAfter(expiresAt)) {
+                            app.aaps.core.ui.R.attr.warningColor
+                        } else {
+                            app.aaps.core.ui.R.attr.defaultTextColor
+                        }
+                    )
+                )
+                val hardEndAt = expiresAt.plusHours(8)
+                podInfoBinding.podHardEndDate.text = readableZonedTime(hardEndAt)
+                podInfoBinding.podHardEndDate.setTextColor(
+                    rh.gac(
+                        context,
+                        if (DateTime.now().isAfter(hardEndAt)) {
                             app.aaps.core.ui.R.attr.warningColor
                         } else {
                             app.aaps.core.ui.R.attr.defaultTextColor
@@ -625,16 +641,17 @@ class OmnipodErosOverviewFragment : DaggerFragment() {
     }
 
     private fun readableZonedTime(time: DateTime): String {
-        val timeAsJavaData = time.toLocalDateTime().toDate()
+        // Use millis directly to avoid DST bugs in toLocalDateTime().toDate() conversion chain
+        val timeMillis = time.millis
         val timeZone = podStateManager.timeZone.toTimeZone()
         if (timeZone == TimeZone.getDefault()) {
-            return dateUtil.dateAndTimeString(timeAsJavaData.time)
+            return dateUtil.dateAndTimeString(timeMillis)
         }
 
-        val isDaylightTime = timeZone.inDaylightTime(timeAsJavaData)
+        val isDaylightTime = timeZone.inDaylightTime(java.util.Date(timeMillis))
         val locale = resources.configuration.locales[0]
         val timeZoneDisplayName = timeZone.getDisplayName(isDaylightTime, TimeZone.SHORT, locale) + " " + timeZone.getDisplayName(isDaylightTime, TimeZone.LONG, locale)
-        return rh.gs(app.aaps.pump.omnipod.common.R.string.omnipod_common_time_with_timezone, dateUtil.dateAndTimeString(timeAsJavaData.time), timeZoneDisplayName)
+        return rh.gs(app.aaps.pump.omnipod.common.R.string.omnipod_common_time_with_timezone, dateUtil.dateAndTimeString(timeMillis), timeZoneDisplayName)
     }
 
     private fun readableDuration(dateTime: DateTime): String {

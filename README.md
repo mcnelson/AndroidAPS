@@ -1,18 +1,22 @@
-# AAPS
-* Check the wiki: https://wiki.aaps.app
-*  Everyone who’s been looping with AAPS needs to fill out the form after 3 days of looping  https://docs.google.com/forms/d/14KcMjlINPMJHVt28MDRupa4sz4DDIooI4SrW0P3HSN8/viewform?c=0&w=1
+# McNelson's AndroidAPS 3.4 Tweaks
 
-[![Support Server](https://img.shields.io/discord/629952586895851530.svg?label=Discord&logo=Discord&colorB=7289da&style=for-the-badge)](https://discord.gg/4fQUWHZ4Mw)
+This is my fork of AndroidAPS containing a squash of my current modifications of `3.4`. The primary feature is **QuickBolus**, an Android activity that is a streamlined treatment management UI.
 
-[![CircleCI](https://circleci.com/gh/nightscout/AndroidAPS/tree/master.svg?style=svg)](https://circleci.com/gh/nightscout/AndroidAPS/tree/master)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/androidaps/localized.svg)](https://translations.aaps.app/project/androidaps)
-[![Documentation Status](https://readthedocs.org/projects/androidaps/badge/?version=latest)](https://wiki.aaps.app/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/nightscout/AndroidAPS/branch/master/graph/badge.svg?token=EmklfIV6bH)](https://codecov.io/gh/nightscout/AndroidAPS)
+## Brief Summary of Features
+### QuickBolus on wear + app
+Streamlined bolus UI primarily for use on wear but also on phone. Launcher activity from wear (standalone syringe icon in app drawer). Replaces Treatment dialog on the phone (launch from Treatment button).
 
-DEV: 
-[![CircleCI](https://circleci.com/gh/nightscout/AndroidAPS/tree/dev.svg?style=svg)](https://circleci.com/gh/nightscout/AndroidAPS/tree/dev)
-[![codecov](https://codecov.io/gh/nightscout/AndroidAPS/branch/dev/graph/badge.svg?token=EmklfIV6bH)](https://codecov.io/gh/nightscout/AndroidAPS/tree/dev)
+### BR+TT Complication
+Complication showing basal rate and either profile target or temporary target. If TT is active, replaces basal rate and shows how many minutes are remaining.
 
-<img src="https://cdn.iconscout.com/icon/free/png-256/bitcoin-384-920569.png" srcset="https://cdn.iconscout.com/icon/free/png-512/bitcoin-384-920569.png 2x" alt="Bitcoin Icon" width="100">
+### Glucose Dot Complication
+A watch complication showing a dot that reflects current glucose.
 
-3KawK8aQe48478s6fxJ8Ms6VTWkwjgr9f2
+### Pump+Sensor Expiration Hrs Complication
+Complication showing 3 numbers: a combination of (1) hours left on Libre 3 sensor, (2) hours left on Omnipod, and (3) insulin units remaining on the pod visible only if <50.
+
+### Loop recalculation throttling
+Reduce loop recalculation frequency from 1min to 4min for significant improvement in battery life.
+
+### Standalone zoomable graph on wear
+Reproduction of the main AAPS graph. Pinch-zoomable. Includes reproduction of the main AAPS header showing IOB, COB, BR, and AS as well. This is WIP/scrappy feature.
