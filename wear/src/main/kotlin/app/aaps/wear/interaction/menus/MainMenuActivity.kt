@@ -44,6 +44,7 @@ class MainMenuActivity : MenuListActivity() {
                 add(MenuItem(R.drawable.ic_profile, getString(R.string.status_profile_switch)))
                 add(MenuItem(R.drawable.ic_settings, getString(R.string.menu_settings)))
                 add(MenuItem(R.drawable.ic_status, getString(R.string.menu_status)))
+                add(MenuItem(R.drawable.ic_graph, getString(R.string.menu_graph)))
                 if (sp.getBoolean(R.string.key_prime_fill, false))
                     add(MenuItem(R.drawable.ic_canula, getString(R.string.menu_prime_fill)))
             }
@@ -64,6 +65,7 @@ class MainMenuActivity : MenuListActivity() {
             getString(R.string.menu_status)           -> startActivity(Intent(this, StatusMenuActivity::class.java))
             getString(R.string.menu_prime_fill)       -> startActivity(Intent(this, FillMenuActivity::class.java))
             getString(R.string.menu_ecarb)            -> startActivity(Intent(this, ECarbActivity::class.java))
+            getString(R.string.menu_graph)            -> startActivity(Intent(this, GraphActivity::class.java))
         }
     }
 }

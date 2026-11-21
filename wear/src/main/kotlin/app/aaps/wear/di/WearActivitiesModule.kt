@@ -22,6 +22,7 @@ import app.aaps.wear.interaction.actions.WizardResultActivity
 import app.aaps.wear.interaction.actions.WizardResultFragment
 import app.aaps.wear.interaction.activities.LoopStatusActivity
 import app.aaps.wear.interaction.menus.FillMenuActivity
+import app.aaps.wear.interaction.menus.GraphActivity
 import app.aaps.wear.interaction.menus.MainMenuActivity
 import app.aaps.wear.interaction.menus.PreferenceMenuActivity
 import app.aaps.wear.interaction.menus.StatusMenuActivity
@@ -62,4 +63,5 @@ abstract class WearActivitiesModule {
     @ContributesAndroidInjector abstract fun contributesQuickSnoozeActivity(): QuickSnoozeActivity
     @ContributesAndroidInjector abstract fun contributesLoopStateTimedActivity(): LoopStateTimedActivity
     @ContributesAndroidInjector abstract fun contributesLoopStatusActivity(): LoopStatusActivity
+    @ContributesAndroidInjector abstract fun contributesGraphActivity(): GraphActivity
 }

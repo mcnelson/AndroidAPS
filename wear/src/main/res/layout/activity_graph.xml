@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:padding="0dp"
+    app:boxedEdges="none">
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/left_spacer"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:background="@color/black" />
+
+            <FrameLayout
+                android:id="@+id/chart_container"
+                android:layout_width="480dp"
+                android:layout_height="match_parent"
+                android:background="@color/black">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/metrics_panel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/black"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_actions_profileswitch"
+                            android:tint="@color/white"
+                            android:layout_marginEnd="2dp"
+                            android:contentDescription="Profile" />
+
+                        <TextView
+                            android:id="@+id/metric_profile_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:id="@+id/metric_profile_percentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100%"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_temptarget"
+                            android:tint="@color/white"
+                            android:layout_marginEnd="2dp"
+                            android:contentDescription="Target" />
+
+                        <TextView
+                            android:id="@+id/metric_target"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100-100"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/metric_bg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="130"
+                        android:textColor="@color/white"
+                        android:textSize="42sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="12dp">
+
+                        <TextView
+                            android:id="@+id/metric_direction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="→"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/metric_ago"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 m ago"
+                            android:textColor="@color/white"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="12dp">
+
+                        <TextView
+                            android:id="@+id/metric_delta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Δ: 0"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:id="@+id/metric_delta_15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Δ15: +3"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:id="@+id/metric_delta_40"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Δ40: +3"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/metric_loop_status_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_loop_closed"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="Loop status"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_ins"
+                            android:tint="@color/cyan_500"
+                            android:contentDescription="IOB" />
+
+                        <TextView
+                            android:id="@+id/metric_iob"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1.77 U"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_carbs"
+                            android:tint="@color/carbs"
+                            android:contentDescription="COB" />
+
+                        <TextView
+                            android:id="@+id/metric_cob"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 g"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:id="@+id/basal_icon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_br"
+                            android:tint="@color/purple_500"
+                            android:contentDescription="Basal" />
+
+                        <TextView
+                            android:id="@+id/metric_basal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.65 U/h"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_swap_vert_black_48dp_green"
+                            android:tint="@color/teal_500"
+                            android:contentDescription="Autosens" />
+
+                        <TextView
+                            android:id="@+id/metric_autosens"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AS: 100%"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_cp_age_sensor"
+                            android:tint="@color/white"
+                            android:layout_marginEnd="2dp"
+                            android:contentDescription="Sensor age" />
+
+                        <TextView
+                            android:id="@+id/metric_sensor_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0d"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_cp_age_insulin"
+                            android:tint="@color/white"
+                            android:layout_marginEnd="2dp"
+                            android:contentDescription="Reservoir age" />
+
+                        <TextView
+                            android:id="@+id/metric_reservoir"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120U"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_cp_age_battery"
+                            android:tint="@color/white"
+                            android:layout_marginEnd="2dp"
+                            android:contentDescription="Battery" />
+
+                        <TextView
+                            android:id="@+id/metric_battery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="85%"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/right_spacer"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:background="@color/black" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</androidx.wear.widget.BoxInsetLayout>

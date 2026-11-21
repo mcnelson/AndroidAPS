@@ -108,6 +108,8 @@ dependencies {
     implementation(project(":core:keys"))
     implementation(project(":core:ui"))
     implementation(project(":core:data"))
+    implementation(project(":core:graph"))
+    implementation(project(":core:graphview"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
