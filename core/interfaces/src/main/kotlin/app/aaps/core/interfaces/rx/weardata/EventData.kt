@@ -112,6 +112,19 @@ sealed class EventData : Event() {
     data class ActionWizardPreCheck(val carbs: Int, val percentage: Int) : EventData()
 
     @Serializable
+    data class ActionQuickBolusPreview(val percentage: Int = 100) : EventData()
+
+    @Serializable
+    data class ActionQuickBolusPreviewResult(
+        val totalInsulin: Double,
+        val ic: Double,
+        val cob: Double,
+        val bolusIob: Double,
+        val basalIob: Double,
+        val carbsEquivalent: Double
+    ) : EventData()
+
+    @Serializable
     data class ActionQuickWizardPreCheck(val guid: String) : EventData()
 
     @Serializable
@@ -191,6 +204,9 @@ sealed class EventData : Event() {
         }
 
     }
+
+    @Serializable
+    data class ActionQuickTempTarget(val command: ActionTempTargetPreCheck.TempTargetCommand) : EventData()
 
     // Mobile <- Wear return
 

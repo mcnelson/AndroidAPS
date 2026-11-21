@@ -283,6 +283,13 @@ class DataHandlerMobile @Inject constructor(
                            doTempTarget(it)
                        }, fabricPrivacy::logException)
         disposable += rxBus
+            .toObservable(EventData.ActionQuickTempTarget::class.java)
+            .observeOn(aapsSchedulers.io)
+            .subscribe({
+                           aapsLogger.debug(LTag.WEAR, "ActionQuickTempTarget received $it from ${it.sourceNodeId}")
+                           handleQuickTempTarget(it)
+                       }, fabricPrivacy::logException)
+        disposable += rxBus
             .toObservable(EventData.ActionBolusPreCheck::class.java)
             .observeOn(aapsSchedulers.io)
             .subscribe({
@@ -348,6 +355,13 @@ class DataHandlerMobile @Inject constructor(
             .subscribe({
                            aapsLogger.debug(LTag.WEAR, "ActionWizardPreCheck received $it from ${it.sourceNodeId}")
                            handleWizardPreCheck(it)
+                       }, fabricPrivacy::logException)
+        disposable += rxBus
+            .toObservable(EventData.ActionQuickBolusPreview::class.java)
+            .observeOn(aapsSchedulers.io)
+            .subscribe({
+                           aapsLogger.debug(LTag.WEAR, "ActionQuickBolusPreview received $it from ${it.sourceNodeId}")
+                           handleQuickBolusPreview(it)
                        }, fabricPrivacy::logException)
         disposable += rxBus
             .toObservable(EventData.ActionWizardConfirmed::class.java)
@@ -752,6 +766,47 @@ class DataHandlerMobile @Inject constructor(
         rxBus.send(EventMobileToWear(wizardResult))
     }
 
+    // Silent preview for QuickBolus live refresh. Uses all wizard factors regardless of
+    // WearWizard* preferences since this is an internal calc, not a user-facing wizard view.
+    // Fails silently (no error toast) so intermittent data gaps don't interrupt the user.
+    private fun handleQuickBolusPreview(command: EventData.ActionQuickBolusPreview) {
+        val pump = activePlugin.activePump
+        if (!pump.isInitialized() || loop.runningMode.isSuspended()) return
+        val profile = profileFunction.getProfile() ?: return
+        val bgReading = iobCobCalculator.ads.actualBg() ?: return
+        val cobInfo = iobCobCalculator.getCobInfo("QuickBolus preview")
+        val cob = cobInfo.displayCob ?: return
+        val tempTarget = persistenceLayer.getTemporaryTargetActiveAt(dateUtil.now())
+
+        val bolusWizard = bolusWizardProvider.get().doCalc(
+            profile = profile,
+            profileName = profileFunction.getProfileName(),
+            tempTarget = tempTarget,
+            carbs = 0,
+            cob = cob,
+            bg = bgReading.valueToUnits(profileFunction.getUnits()),
+            correction = 0.0,
+            percentageCorrection = command.percentage,
+            useBg = true,
+            useCob = true,
+            includeBolusIOB = true,
+            includeBasalIOB = true,
+            useSuperBolus = false,
+            useTT = true,
+            useTrend = true,
+            useAlarm = false
+        )
+
+        rxBus.send(EventMobileToWear(EventData.ActionQuickBolusPreviewResult(
+            totalInsulin = bolusWizard.calculatedTotalInsulin,
+            ic = bolusWizard.ic,
+            cob = bolusWizard.cob,
+            bolusIob = -bolusWizard.insulinFromBolusIOB,
+            basalIob = -bolusWizard.insulinFromBasalIOB,
+            carbsEquivalent = bolusWizard.carbsEquivalent
+        )))
+    }
+
     private fun handleUserActionPreCheck(command: EventData.ActionUserActionPreCheck) {
         val pump = activePlugin.activePump
         val profile = profileFunction.getProfile()
@@ -1123,6 +1178,22 @@ class DataHandlerMobile @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun handleQuickTempTarget(action: EventData.ActionQuickTempTarget) {
+        if (!preferences.get(BooleanKey.WearControl)) return
+        when (action.command) {
+            EventData.ActionTempTargetPreCheck.TempTargetCommand.PRESET_ACTIVITY -> startPresetTempTarget(UnitDoubleKey.OverviewActivityTarget, IntKey.OverviewActivityDuration)
+            EventData.ActionTempTargetPreCheck.TempTargetCommand.PRESET_HYPO     -> startPresetTempTarget(UnitDoubleKey.OverviewHypoTarget, IntKey.OverviewHypoDuration)
+            EventData.ActionTempTargetPreCheck.TempTargetCommand.PRESET_EATING   -> startPresetTempTarget(UnitDoubleKey.OverviewEatingSoonTarget, IntKey.OverviewEatingSoonDuration)
+            EventData.ActionTempTargetPreCheck.TempTargetCommand.CANCEL          -> doTempTarget(EventData.ActionTempTargetConfirmed(duration = 0))
+            EventData.ActionTempTargetPreCheck.TempTargetCommand.MANUAL          -> Unit
+        }
+    }
+
+    private fun startPresetTempTarget(targetKey: UnitDoubleKey, durationKey: IntKey) {
+        val target = preferences.get(targetKey)
+        doTempTarget(EventData.ActionTempTargetConfirmed(duration = preferences.get(durationKey), low = target, high = target))
     }
 
     // To make sure WearOS-sent loop state change is constrained

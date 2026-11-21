@@ -747,5 +747,18 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".interaction.actions.QuickBolusActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_bolus"
+            android:label="@string/quick_bolus_title"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>

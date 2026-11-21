@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="quick_bolus_amount_text_size">32sp</dimen>
+    <dimen name="quick_bolus_iob_text_size">18sp</dimen>
+    <dimen name="quick_bolus_checkbox_text_size">18sp</dimen>
+    <dimen name="quick_bolus_zone_corner_radius">24dp</dimen>
+    <dimen name="quick_bolus_amt_icon_pad_top">18dp</dimen>
+</resources>

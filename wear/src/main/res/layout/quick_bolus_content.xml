@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <Button
+        android:id="@+id/quick_bolus_carb_decrease"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/quick_bolus_zone_tl"
+        android:gravity="bottom|end"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:text="▼"
+        android:textColor="#99FFFFFF"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/quick_bolus_eating_checkbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.20" />
+
+    <Button
+        android:id="@+id/quick_bolus_carb_increase"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/quick_bolus_zone_tr"
+        android:gravity="bottom|start"
+        android:paddingStart="10dp"
+        android:paddingBottom="6dp"
+        android:text="▲"
+        android:textColor="#99FFFFFF"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/quick_bolus_eating_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.20" />
+
+    <Button
+        android:id="@+id/quick_bolus_down"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/quick_bolus_zone_bl"
+        android:gravity="top|end"
+        android:paddingEnd="10dp"
+        android:paddingTop="@dimen/quick_bolus_amt_icon_pad_top"
+        android:text="▼"
+        android:textColor="#99FFFFFF"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.28" />
+
+    <Button
+        android:id="@+id/quick_bolus_up"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/quick_bolus_zone_br"
+        android:gravity="top|start"
+        android:paddingStart="10dp"
+        android:paddingTop="@dimen/quick_bolus_amt_icon_pad_top"
+        android:text="▲"
+        android:textColor="#99FFFFFF"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.40"
+        app:layout_constraintWidth_percent="0.28" />
+
+    <TextView
+        android:id="@+id/quick_bolus_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="0.0 U"
+        android:textColor="@color/white"
+        android:textSize="@dimen/quick_bolus_amount_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/quick_bolus_iob_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/spacer_10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quick_bolus_amount">
+
+        <LinearLayout
+            android:id="@+id/quick_bolus_iob_segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/quick_bolus_iob_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:padding="1dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_bolus" />
+
+            <TextView
+                android:id="@+id/quick_bolus_iob_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:textColor="@color/grey_500"
+                android:textSize="@dimen/quick_bolus_iob_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/quick_bolus_cob_segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/quick_bolus_cob_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:padding="3dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_carbs_orange" />
+
+            <TextView
+                android:id="@+id/quick_bolus_cob_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:textColor="@color/grey_500"
+                android:textSize="@dimen/quick_bolus_iob_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/quick_bolus_eating_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Eating"
+        android:textColor="@color/gray_500"
+        android:textSize="@dimen/quick_bolus_checkbox_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/quick_bolus_go"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quick_bolus_iob_preview"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <Button
+        android:id="@+id/quick_bolus_go"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/circle"
+        android:backgroundTint="@color/green_500"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83"
+        app:layout_constraintWidth_percent="0.28" />
+
+    <ImageView
+        android:id="@+id/quick_bolus_stale_warning"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_sync_alert"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quick_bolus_go"
+        app:tint="@color/colorCarbsButton" />
+
+    <ProgressBar
+        android:id="@+id/go_button_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/quick_bolus_go"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/quick_bolus_go"
+        app:layout_constraintStart_toStartOf="@+id/quick_bolus_go"
+        app:layout_constraintTop_toTopOf="@+id/quick_bolus_go"
+        app:layout_constraintWidth_percent="0.40" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
