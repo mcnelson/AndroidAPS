@@ -175,6 +175,11 @@
     <string name="until_changed">Until changed</string>
     <string name="limitations">Limitations</string>
 
+    <!-- Quick Bolus -->
+    <string name="quick_bolus_eating">Eating</string>
+    <string name="quick_bolus_iob_label">IOB:</string>
+    <string name="quick_bolus_new_iob_label">New IOB:</string>
+
     <string-array name="yes_no_positiveonly_negativeonly">
         <item>Both</item>
         <item>Positive only</item>

@@ -10,6 +10,7 @@ import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -259,6 +260,11 @@ open class NumberPicker(context: Context, attrs: AttributeSet? = null) : LinearL
     val text: String
         get() = binding.editText.text.toString()
 
+    fun hideStepButtons() {
+        binding.minusButton.visibility = GONE
+        binding.plusButton.visibility = GONE
+    }
+
     private fun inc(multiplier: Int) {
         currentValue += step * multiplier
         if (currentValue > maxValue) {
@@ -366,6 +372,14 @@ open class NumberPicker(context: Context, attrs: AttributeSet? = null) : LinearL
 
             try {
                 mCustomContentDescription = getString(R.styleable.NumberPicker_customContentDescription)
+            } finally {
+                recycle()
+            }
+        }
+        context.obtainStyledAttributes(attrs, intArrayOf(android.R.attr.textSize)).apply {
+            try {
+                val textSizePx = getDimension(0, -1f)
+                if (textSizePx > 0f) binding.editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizePx)
             } finally {
                 recycle()
             }

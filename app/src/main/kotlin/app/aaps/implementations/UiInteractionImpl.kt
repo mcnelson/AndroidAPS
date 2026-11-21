@@ -112,6 +112,12 @@ class UiInteractionImpl @Inject constructor(
             .show(fragmentManager, "TreatmentDialog")
     }
 
+    override fun runQuickBolusDialog(fragmentManager: FragmentManager) {
+        app.aaps.ui.dialogs.TreatmentDialog()
+            .also { it.arguments = android.os.Bundle().also { b -> b.putBoolean("quickMode", true) } }
+            .show(fragmentManager, "TreatmentDialog")
+    }
+
     override fun runInsulinDialog(fragmentManager: FragmentManager) {
         InsulinDialog()
             .show(fragmentManager, "InsulinDialog")

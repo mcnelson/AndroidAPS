@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <!-- Insulin row: [▼] [NumberPicker centered] [▲] -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="10dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/insulin_down"
+            style="@style/GrayButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_margin="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="▼"
+            android:textSize="16sp"
+            app:cornerRadius="22dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <app.aaps.ui.elements.FluidWidthNumberPicker
+                android:id="@+id/insulin"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:textSize="22sp"
+                app:customContentDescription="@string/overview_insulin_label" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/insulin_up"
+            style="@style/GrayButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_margin="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="▲"
+            android:textSize="16sp"
+            app:cornerRadius="22dp" />
+
+    </LinearLayout>
+
+    <!-- IOB preview row -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:id="@+id/iob_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="IOB: 0.0 U"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/step_size_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:text="0.5"
+            android:textColor="#888888"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <!-- Eating row: [▼] [checkbox "Eating"] [NumberPicker] [g] [▲] -->
+    <LinearLayout
+        android:id="@+id/eating_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/carbs_down"
+            style="@style/GrayButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_margin="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="▼"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:cornerRadius="22dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/eating_checkbox"
+                style="@style/Widget.App.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:text="@string/quick_bolus_eating"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/carb_deficit_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <app.aaps.ui.elements.FluidWidthNumberPicker
+                android:id="@+id/carbs"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:customContentDescription="@string/carbs" />
+
+            <TextView
+                android:id="@+id/carbs_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/shortgramm"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/carbs_up"
+            style="@style/GrayButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_margin="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="▲"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:cornerRadius="22dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

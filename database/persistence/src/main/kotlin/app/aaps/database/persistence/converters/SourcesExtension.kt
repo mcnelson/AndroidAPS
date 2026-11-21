@@ -6,6 +6,7 @@ import app.aaps.database.entities.UserEntry
 fun UserEntry.Sources.fromDb(): Sources =
     when (this) {
         UserEntry.Sources.TreatmentDialog     -> Sources.TreatmentDialog
+        UserEntry.Sources.QuickBolusDialog    -> Sources.QuickBolusDialog
         UserEntry.Sources.InsulinDialog       -> Sources.InsulinDialog
         UserEntry.Sources.CarbDialog          -> Sources.CarbDialog
         UserEntry.Sources.WizardDialog        -> Sources.WizardDialog
@@ -88,6 +89,7 @@ fun UserEntry.Sources.fromDb(): Sources =
 fun Sources.toDb(): UserEntry.Sources =
     when (this) {
         Sources.TreatmentDialog     -> UserEntry.Sources.TreatmentDialog
+        Sources.QuickBolusDialog    -> UserEntry.Sources.QuickBolusDialog
         Sources.InsulinDialog       -> UserEntry.Sources.InsulinDialog
         Sources.CarbDialog          -> UserEntry.Sources.CarbDialog
         Sources.WizardDialog        -> UserEntry.Sources.WizardDialog

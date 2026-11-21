@@ -2,6 +2,7 @@ package app.aaps.core.data.ue
 
 enum class Sources {
     TreatmentDialog,
+    QuickBolusDialog,
     InsulinDialog,
     CarbDialog,
     WizardDialog,

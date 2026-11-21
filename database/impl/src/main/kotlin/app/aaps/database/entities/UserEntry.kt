@@ -125,6 +125,7 @@ data class UserEntry(
 
     enum class Sources {
         TreatmentDialog,
+        QuickBolusDialog,
         InsulinDialog,
         CarbDialog,
         WizardDialog,

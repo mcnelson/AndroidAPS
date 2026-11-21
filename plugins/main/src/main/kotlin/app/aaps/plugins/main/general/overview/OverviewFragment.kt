@@ -425,7 +425,7 @@ class OverviewFragment : DaggerFragment(), View.OnClickListener, OnLongClickList
                 R.id.treatment_button    -> protectionCheck.queryProtection(
                     activity,
                     ProtectionCheck.Protection.BOLUS,
-                    UIRunnable { if (isAdded) uiInteraction.runTreatmentDialog(childFragmentManager) })
+                    UIRunnable { if (isAdded) uiInteraction.runQuickBolusDialog(childFragmentManager) })
 
                 R.id.wizard_button       -> protectionCheck.queryProtection(
                     activity,

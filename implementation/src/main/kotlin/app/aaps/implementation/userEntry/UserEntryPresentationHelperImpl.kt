@@ -43,6 +43,7 @@ class UserEntryPresentationHelperImpl @Inject constructor(
 
     override fun iconId(source: Sources): Int = when (source) {
         Sources.TreatmentDialog     -> R.drawable.icon_insulin_carbs
+        Sources.QuickBolusDialog    -> R.drawable.icon_insulin_carbs
         Sources.InsulinDialog       -> R.drawable.ic_bolus
         Sources.CarbDialog          -> R.drawable.ic_cp_bolus_carbs
         Sources.WizardDialog        -> R.drawable.ic_calculator
