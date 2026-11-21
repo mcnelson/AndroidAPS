@@ -68,4 +68,20 @@ interface IobCobCalculator {
      *  @return IobTotal
      */
     fun calculateIobFromTempBasalsIncludingConvertedExtended(): IobTotal
+
+    /**
+     * Find the start of the current "bolus session": the most recent point in time, scanning
+     * backward from now, at which total IOB was at or below [threshold]. This marks the boundary
+     * where IOB last rose from (near) zero, e.g. the start of a meal or correction episode, as
+     * opposed to the instantaneous IOB snapshot which stacks every subsequent correction.
+     *
+     * Caller must confirm current IOB is above [threshold] before calling. This always performs
+     * the backward search; it does not short-circuit "no active session" itself, since that check
+     * belongs with whatever current-IOB value the caller already has on hand.
+     *
+     * @param profile   current profile (for DIA, used to bound how far back to search)
+     * @param threshold IOB (U) at or below which is considered "no active session"
+     * @return timestamp of session start
+     */
+    fun findBolusSessionStart(profile: Profile, threshold: Double): Long
 }

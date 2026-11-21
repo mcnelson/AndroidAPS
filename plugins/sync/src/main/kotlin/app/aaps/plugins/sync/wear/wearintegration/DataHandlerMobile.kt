@@ -8,6 +8,7 @@ import app.aaps.core.data.model.BCR
 import app.aaps.core.data.model.BS
 import app.aaps.core.data.model.GV
 import app.aaps.core.data.model.GlucoseUnit
+import app.aaps.core.data.model.TE
 import app.aaps.core.data.model.HR
 import app.aaps.core.data.model.RM
 import app.aaps.core.data.model.SC
@@ -136,6 +137,10 @@ class DataHandlerMobile @Inject constructor(
 
     private var lastBolusWizard: BolusWizard? = null
     private var lastQuickWizardEntry: QuickWizardEntry? = null
+
+    // Session start doesn't move while IOB stays continuously above threshold - only (re)search when a new session begins.
+    // 0L means "no active session" - never a real timestamp.
+    private var cachedBolusSessionStart: Long = 0L
 
     init {
         // From Wear
@@ -1462,10 +1467,24 @@ class DataHandlerMobile @Inject constructor(
         var cobString = ""
         var currentBasal = ""
         var bgiString = ""
+        var basalIobValue = 0.0
+        var bolusSession = 0.0
         if (config.appInitialized && profile != null) {
             val bolusIob = iobCobCalculator.calculateIobFromBolus().round()
             val basalIob = iobCobCalculator.calculateIobFromTempBasalsIncludingConvertedExtended().round()
+            basalIobValue = basalIob.basaliob
             iobSum = decimalFormatter.to2Decimal(bolusIob.iob + basalIob.basaliob)
+            // IOB at or below this is treated as "no active bolus session" - skip the backward search entirely
+            if (bolusIob.iob + basalIob.basaliob > 0.5) {
+                if (cachedBolusSessionStart == 0L) {
+                    cachedBolusSessionStart = iobCobCalculator.findBolusSessionStart(profile, 0.5)
+                    aapsLogger.debug(LTag.WEAR, "sendStatus: new bolus session, start=${dateUtil.dateAndTimeAndSecondsString(cachedBolusSessionStart)}")
+                }
+                bolusSession = persistenceLayer.getBolusesFromTimeToTime(cachedBolusSessionStart, dateUtil.now(), true).sumOf { it.amount }
+                aapsLogger.debug(LTag.WEAR, "sendStatus: bolusSessionStart=${dateUtil.dateAndTimeAndSecondsString(cachedBolusSessionStart)} bolusSession=$bolusSession")
+            } else {
+                cachedBolusSessionStart = 0L
+            }
             iobDetail = "(${decimalFormatter.to2Decimal(bolusIob.iob)}|${decimalFormatter.to2Decimal(basalIob.basaliob)})"
             cobString = iobCobCalculator.getCobInfo("WatcherUpdaterService").generateCOBString(decimalFormatter)
             currentBasal =
@@ -1491,8 +1510,10 @@ class DataHandlerMobile @Inject constructor(
         //temptarget
         val units = profileFunction.getUnits()
         var tempTargetLevel = 0
+        var tempTargetEndTimestamp = 0L
         val tempTarget = persistenceLayer.getTemporaryTargetActiveAt(dateUtil.now())?.let { tempTarget ->
             tempTargetLevel = 2     // Yellow
+            tempTargetEndTimestamp = tempTarget.end
             profileUtil.toTargetRangeString(tempTarget.lowTarget, tempTarget.highTarget, GlucoseUnit.MGDL, units)
         } ?: profileFunction.getProfile()?.let { profile ->
             // If the target is not the same as set in the profile then oref has overridden it
@@ -1540,7 +1561,12 @@ class DataHandlerMobile @Inject constructor(
                     tempTargetLevel = tempTargetLevel,
                     reservoirString = reservoirString,
                     reservoir = reservoir,
-                    reservoirLevel = reservoirLevel
+                    reservoirLevel = reservoirLevel,
+                    cannulaChangeTimestamp = persistenceLayer.getLastTherapyRecordUpToNow(TE.Type.CANNULA_CHANGE)?.timestamp ?: 0L,
+                    sensorChangeTimestamp = persistenceLayer.getLastTherapyRecordUpToNow(TE.Type.SENSOR_CHANGE)?.timestamp ?: 0L,
+                    basalIob = basalIobValue,
+                    tempTargetEndTimestamp = tempTargetEndTimestamp,
+                    bolusSession = bolusSession
                 )
             )
         )

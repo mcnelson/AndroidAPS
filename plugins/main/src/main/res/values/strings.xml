@@ -226,6 +226,7 @@
     <string name="a11y_bg_outdated">outdated</string>
     <string name="set_basal_question">Accept new temp basal:</string>
     <string name="overview_cgm">CGM</string>
+    <string name="overview_iob_session_label">Session:</string>
     <string name="overview">Overview</string>
     <string name="overview_shortname">HOME</string>
     <string name="description_overview">Displays the current state of your loop and buttons for most common actions</string>

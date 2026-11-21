@@ -390,6 +390,32 @@ class IobCobCalculatorPlugin @Inject constructor(
         return array
     }
 
+    override fun findBolusSessionStart(profile: Profile, threshold: Double): Long {
+        // Caller must confirm current IOB > threshold before calling - this always does a backward
+        // search, which is the expensive path if there's actually no active session.
+        val now = dateUtil.now()
+        val oldestAllowed = now - (profile.dia * 60 * 60 * 1000).toLong() - T.mins(30).msecs()
+        var time = now
+        while (time > oldestAllowed) {
+            val prev = time - T.mins(5).msecs()
+            // Use the profile as it was at that historical point, same as the IOB graph does,
+            // so this matches what's actually displayed rather than reapplying today's profile to the past.
+            val historicalProfile = profileFunction.getProfile(prev) ?: profile
+            val iob = calculateFromTreatmentsAndTemps(prev, historicalProfile).iob
+            aapsLogger.debug(
+                LTag.AUTOSENS,
+                "findBolusSessionStart: step ${dateUtil.dateAndTimeAndSecondsString(prev)} iob=$iob dia=${historicalProfile.dia} profileMatchesCurrent=${historicalProfile === profile}"
+            )
+            if (iob <= threshold) {
+                aapsLogger.debug(LTag.AUTOSENS, "findBolusSessionStart: session start=${dateUtil.dateAndTimeAndSecondsString(prev)} iob at $prev was $iob")
+                return prev
+            }
+            time = prev
+        }
+        aapsLogger.debug(LTag.AUTOSENS, "findBolusSessionStart: reached oldestAllowed=${dateUtil.dateAndTimeAndSecondsString(oldestAllowed)} without IOB dropping to threshold")
+        return oldestAllowed
+    }
+
     override fun calculateIobArrayForSMB(lastAutosensResult: AutosensResult, exerciseMode: Boolean, halfBasalExerciseTarget: Int, isTempTarget: Boolean): Array<IobTotal> {
         // predict IOB out to DIA plus 30m
         val now = dateUtil.now()

@@ -6,8 +6,6 @@ import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import app.aaps.core.interfaces.logging.LTag
-import app.aaps.wear.interaction.utils.DisplayFormat
-import app.aaps.wear.interaction.utils.SmallestDoubleString
 import dagger.android.AndroidInjection
 
 /**
@@ -16,6 +14,8 @@ import dagger.android.AndroidInjection
  * Shows both carbs on board (COB) and insulin on board (IOB)
  * Text: COB value
  * Title: IOB value (minimized to fit)
+ * When negative basal IOB is masking real bolus insulin, appends "+" to net IOB
+ * When there's an active bolus session, appends "Y.Y S" (total insulin since IOB last neared zero)
  *
  */
 class CobIobComplication : ModernBaseComplicationProviderService() {
@@ -36,13 +36,16 @@ class CobIobComplication : ModernBaseComplicationProviderService() {
         return when (type) {
             ComplicationType.SHORT_TEXT      -> {
                 val cob = statusData.cob
-                val iob = SmallestDoubleString(statusData.iobSum, SmallestDoubleString.Units.USE).minimise(DisplayFormat.MAX_FIELD_LEN_SHORT)
+                val basalIob = statusData.basalIob
+                val iobDisplay = if (basalIob < -0.1) "${statusData.iobSum}+" else statusData.iobSum
+                val sessionSuffix = if (statusData.bolusSession > 0.05) "  ${"%.1f".format(statusData.bolusSession)} S" else ""
+                val displayText = (if (cob.equals("0g", ignoreCase = true)) iobDisplay else "$cob   $iobDisplay") + sessionSuffix
+                aapsLogger.debug(LTag.WEAR, "CobIobComplication: bolusSession=${statusData.bolusSession} sessionSuffix='$sessionSuffix' displayText='$displayText'")
 
                 ShortTextComplicationData.Builder(
-                    text = PlainComplicationText.Builder(text = cob).build(),
-                    contentDescription = PlainComplicationText.Builder(text = "COB $cob IOB $iob").build()
+                    text = PlainComplicationText.Builder(text = displayText).build(),
+                    contentDescription = PlainComplicationText.Builder(text = "COB $cob IOB $iobDisplay").build()
                 )
-                    .setTitle(PlainComplicationText.Builder(text = iob).build())
                     .setTapAction(complicationPendingIntent)
                     .build()
             }

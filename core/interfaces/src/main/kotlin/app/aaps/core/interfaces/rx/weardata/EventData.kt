@@ -366,7 +366,12 @@ sealed class EventData : Event() {
         val tempTargetLevel: Int,
         val reservoirString: String,
         val reservoir: Double,
-        val reservoirLevel: Int
+        val reservoirLevel: Int,
+        val cannulaChangeTimestamp: Long = 0,
+        val sensorChangeTimestamp: Long = 0,
+        val basalIob: Double = 0.0,
+        val tempTargetEndTimestamp: Long = 0,
+        val bolusSession: Double = 0.0
     ) : EventData(), EventDataSet
 
     @Serializable

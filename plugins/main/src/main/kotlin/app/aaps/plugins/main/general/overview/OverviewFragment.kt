@@ -986,10 +986,23 @@ class OverviewFragment : DaggerFragment(), View.OnClickListener, OnLongClickList
     private fun iobText(): String =
         rh.gs(app.aaps.core.ui.R.string.format_insulin_units, bolusIob().iob + basalIob().basaliob)
 
+    private fun bolusSessionInsulin(): Double {
+        val currentIob = bolusIob().iob + basalIob().basaliob
+        if (currentIob <= 0.5) return 0.0
+        val profile = profileFunction.getProfile() ?: return 0.0
+        val sessionStart = iobCobCalculator.findBolusSessionStart(profile, 0.5)
+        return persistenceLayer.getBolusesFromTimeToTime(sessionStart, dateUtil.now(), true).sumOf { it.amount }
+    }
+
+    private fun bolusSessionText(): String {
+        val session = bolusSessionInsulin()
+        return if (session > 0.05) "\n" + rh.gs(R.string.overview_iob_session_label) + " " + rh.gs(app.aaps.core.ui.R.string.format_insulin_units, session) else ""
+    }
+
     private fun iobDialogText(): String =
         rh.gs(app.aaps.core.ui.R.string.format_insulin_units, bolusIob().iob + basalIob().basaliob) + "\n" +
             rh.gs(app.aaps.core.ui.R.string.bolus) + ": " + rh.gs(app.aaps.core.ui.R.string.format_insulin_units, bolusIob().iob) + "\n" +
-            rh.gs(app.aaps.core.ui.R.string.basal) + ": " + rh.gs(app.aaps.core.ui.R.string.format_insulin_units, basalIob().basaliob)
+            rh.gs(app.aaps.core.ui.R.string.basal) + ": " + rh.gs(app.aaps.core.ui.R.string.format_insulin_units, basalIob().basaliob) + bolusSessionText()
 
     private fun updateIobCob() {
         val iobText = iobText()
