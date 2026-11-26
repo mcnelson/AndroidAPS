@@ -1,6 +1,6 @@
 # McNelson's AndroidAPS 3.4 Tweaks
 
-This is my fork of AndroidAPS containing a squash of my current modifications of `3.4`. The primary feature is **QuickBolus**, an Android activity that is a streamlined treatment management UI.
+This is my fork of AndroidAPS containing a squash of my current modifications of `3.4`. The primary feature is **QuickBolus**, an Android activity that is a streamlined treatment management UI. [Why](https://nelsonware.net/posts/my-t1d-smartwatch-bolus-ux-design-with-androidaps/)
 
 ## Brief Summary of Features
 ### QuickBolus on wear + app
